@@ -1,0 +1,45 @@
+*,
+*::before,
+*::after {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+@font-face {
+  font-family: "Convergence";
+  src: url("/fonts/Convergence-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  color: #e47c34;
+  font-size: 1.2rem;
+  font-family: "Convergence", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+body > * {
+  color: inherit;
+  font-size: inherit;
+  padding: 1rem;
+  font-family: inherit;
+}
+
+button {
+  border: none;
+  border-radius: 0.5rem;
+  background: #252422;
+  color: #fff;
+  text-transform: uppercase;
+  padding: 1rem 2rem;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+li,
+ul {
+  list-style: none;
+}
