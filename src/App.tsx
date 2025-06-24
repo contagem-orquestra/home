@@ -1,8 +1,10 @@
+import { pdf } from "@react-pdf/renderer";
+import { Reorder } from "motion/react";
 import { useState } from "react";
 import type { SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import "./App.css";
-import { Reorder } from "motion/react";
+import PDFDocument from "./PDFDocument";
 
 type OrchestraFormData = {
   orgaoEletronico?: number;
@@ -29,17 +31,59 @@ type OrchestraFormData = {
   eufonio?: number;
   tuba?: number;
   hinos: number[];
+  maestros: string[];
+  observacoes: string;
 };
 
 function App() {
-  const { register, handleSubmit, setValue, watch } =
-    useForm<OrchestraFormData>({ defaultValues: { hinos: [1, 12] } });
+  const { register, handleSubmit, setValue, watch, reset } =
+    useForm<OrchestraFormData>({ defaultValues: { hinos: [], maestros: [] } });
 
   const [hymnNumber, setHymnNumber] = useState<string>("");
+  const [maestroName, setMaestroName] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState<string>("");
   const hinos = watch("hinos") || [];
+  const maestros = watch("maestros") || [];
 
-  const handleOrchestraSubmit: SubmitHandler<OrchestraFormData> = (data) => {
-    console.log(data);
+  const handleOrchestraSubmit: SubmitHandler<OrchestraFormData> = async (
+    data
+  ) => {
+    const instruments = Object.entries(data).filter(
+      ([key, value]) =>
+        key !== "hinos" &&
+        key !== "maestros" &&
+        key !== "observacoes" &&
+        value === 0
+    );
+
+    if (instruments.length > 0) {
+      setErrorMessage("A orquestra deve ter pelo menos um instrumento");
+      return;
+    }
+
+    if (!data.hinos || data.hinos.length === 0) {
+      setErrorMessage("É necessário adicionar pelo menos um hino");
+      return;
+    }
+
+    if (!data.maestros || data.maestros.length === 0) {
+      setErrorMessage("É necessário adicionar pelo menos um maestro");
+      return;
+    }
+
+    setErrorMessage("");
+
+    const blob = await pdf(<PDFDocument data={data} />).toBlob();
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "orquestra-relatorio.pdf";
+    link.click();
+    URL.revokeObjectURL(url);
+
+    reset({ hinos: [], maestros: [] });
+    setHymnNumber("");
+    setMaestroName("");
   };
 
   const addHymn = () => {
@@ -54,6 +98,21 @@ function App() {
     setValue(
       "hinos",
       hinos.filter((_, i) => i !== index)
+    );
+  };
+
+  const addMaestro = () => {
+    if (maestroName && !maestros.includes(maestroName)) {
+      setValue("maestros", [...maestros, maestroName]);
+    }
+
+    setMaestroName("");
+  };
+
+  const removeMaestro = (index: number) => {
+    setValue(
+      "maestros",
+      maestros.filter((_, i) => i !== index)
     );
   };
 
@@ -426,7 +485,14 @@ function App() {
           style={{ display: "flex", flexDirection: "column", gap: "2rem" }}
         >
           {hinos.map((hymn, index) => (
-            <Reorder.Item key={hymn} value={hymn} style={{ boxShadow: "0 4px 8px rgba(0,0,0,0.2)", borderRadius: "0.5rem" }}>
+            <Reorder.Item
+              key={hymn}
+              value={hymn}
+              style={{
+                boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
+                borderRadius: "0.5rem",
+              }}
+            >
               <div className="hymn-item">
                 <input
                   className="description"
@@ -446,6 +512,89 @@ function App() {
           ))}
         </Reorder.Group>
 
+        <h2 className="title">Maestros</h2>
+
+        <div className="maestro-form">
+          <div className="content">
+            <div className="input-group maestro-input">
+              <input
+                id="maestroName"
+                placeholder=" "
+                autoComplete="off"
+                type="text"
+                className="input"
+                value={maestroName}
+                onChange={(e) => setMaestroName(e.target.value)}
+              />
+              <label htmlFor="maestroName" className="label">
+                Maestro
+              </label>
+            </div>
+            <button
+              type="button"
+              className="add-maestro-btn"
+              onClick={addMaestro}
+            ></button>
+          </div>
+        </div>
+
+        <Reorder.Group
+          axis="y"
+          values={maestros}
+          onReorder={(newOrder) => setValue("maestros", newOrder)}
+          style={{ display: "flex", flexDirection: "column", gap: "2rem" }}
+        >
+          {maestros.map((maestro, index) => (
+            <Reorder.Item
+              key={maestro}
+              value={maestro}
+              style={{
+                boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
+                borderRadius: "0.5rem",
+              }}
+            >
+              <div className="maestro-item">
+                <input
+                  className="description"
+                  type="text"
+                  id={`maestros.${index}`}
+                  {...register(`maestros.${index}`)}
+                  value={maestro}
+                  readOnly
+                />
+                <button
+                  className="remove"
+                  type="button"
+                  onClick={() => removeMaestro(index)}
+                ></button>
+              </div>
+            </Reorder.Item>
+          ))}
+        </Reorder.Group>
+
+        <div className="input-group">
+          <textarea
+            className="input"
+            id="observacoes"
+            placeholder=" "
+            {...register("observacoes")}
+          ></textarea>
+          <label htmlFor="observacoes" className="label">
+            Observações
+          </label>
+        </div>
+
+        {errorMessage && (
+          <p
+            style={{
+              color: "#ff4500",
+              fontSize: "0.8rem",
+              marginTop: "0.5rem",
+            }}
+          >
+            {errorMessage}
+          </p>
+        )}
         <button type="submit">Gerar pdf</button>
       </form>
     </main>
