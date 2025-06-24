@@ -53,7 +53,7 @@ function App() {
         key !== "hinos" &&
         key !== "maestros" &&
         key !== "observacoes" &&
-        value === 0
+        (!value || value === 0)
     );
 
     if (instruments.length > 0) {
