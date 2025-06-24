@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('https://contagem-orquestra.github.io/home/sw.js', { scope: 'https://contagem-orquestra.github.io/home/' })})}
