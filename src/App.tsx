@@ -50,15 +50,17 @@ function App() {
   const handleOrchestraSubmit: SubmitHandler<OrchestraFormData> = async (
     data
   ) => {
-    const instruments = Object.entries(data).filter(
-      ([key, value]) =>
-        key !== "hinos" &&
-        key !== "maestros" &&
-        key !== "observacoes" &&
-        (!value || value === 0)
+    const instrumentsAmount = Object.entries(data).reduce(
+      (prevValue, [key, value]) => {
+        if (!["hinos", "maestros", "observacoes"].includes(key)) {
+          return prevValue + (Number(value) || 0);
+        }
+        return prevValue;
+      },
+      0
     );
 
-    if (instruments.length <= 0) {
+    if (instrumentsAmount <= 0) {
       setErrorMessage("A orquestra deve ter pelo menos um instrumento");
       return;
     }
@@ -132,6 +134,11 @@ function App() {
             autoComplete="off"
             type="number"
             id="orgaoEletronico"
+            onKeyDown={(e) => {
+              if (e.key === "0" && !e.currentTarget.value) {
+                e.preventDefault();
+              }
+            }}
             {...register("orgaoEletronico")}
           />
           <label htmlFor="orgaoEletronico" className="label">
@@ -146,6 +153,11 @@ function App() {
             autoComplete="off"
             id="violino"
             type="number"
+            onKeyDown={(e) => {
+              if (e.key === "0" && !e.currentTarget.value) {
+                e.preventDefault();
+              }
+            }}
             {...register("violino")}
           />
           <label htmlFor="violino" className="label">
@@ -160,6 +172,11 @@ function App() {
             id="viola"
             autoComplete="off"
             type="number"
+            onKeyDown={(e) => {
+              if (e.key === "0" && !e.currentTarget.value) {
+                e.preventDefault();
+              }
+            }}
             {...register("viola")}
           />
           <label htmlFor="viola" className="label">
@@ -174,6 +191,11 @@ function App() {
             id="violoncelo"
             autoComplete="off"
             type="number"
+            onKeyDown={(e) => {
+              if (e.key === "0" && !e.currentTarget.value) {
+                e.preventDefault();
+              }
+            }}
             {...register("violoncelo")}
           />
           <label htmlFor="violoncelo" className="label">
@@ -188,6 +210,11 @@ function App() {
             id="flautaTransversal"
             autoComplete="off"
             type="number"
+            onKeyDown={(e) => {
+              if (e.key === "0" && !e.currentTarget.value) {
+                e.preventDefault();
+              }
+            }}
             {...register("flautaTransversal")}
           />
           <label htmlFor="flautaTransversal" className="label">
@@ -202,6 +229,11 @@ function App() {
             id="oboe"
             autoComplete="off"
             type="number"
+            onKeyDown={(e) => {
+              if (e.key === "0" && !e.currentTarget.value) {
+                e.preventDefault();
+              }
+            }}
             {...register("oboe")}
           />
           <label htmlFor="oboe" className="label">
@@ -216,6 +248,11 @@ function App() {
             id="oboeDAmore"
             autoComplete="off"
             type="number"
+            onKeyDown={(e) => {
+              if (e.key === "0" && !e.currentTarget.value) {
+                e.preventDefault();
+              }
+            }}
             {...register("oboeDAmore")}
           />
           <label htmlFor="oboeDAmore" className="label">
@@ -230,6 +267,11 @@ function App() {
             id="corneIngles"
             autoComplete="off"
             type="number"
+            onKeyDown={(e) => {
+              if (e.key === "0" && !e.currentTarget.value) {
+                e.preventDefault();
+              }
+            }}
             {...register("corneIngles")}
           />
           <label htmlFor="corneIngles" className="label">
@@ -244,6 +286,11 @@ function App() {
             id="fagote"
             autoComplete="off"
             type="number"
+            onKeyDown={(e) => {
+              if (e.key === "0" && !e.currentTarget.value) {
+                e.preventDefault();
+              }
+            }}
             {...register("fagote")}
           />
           <label htmlFor="fagote" className="label">
@@ -258,6 +305,11 @@ function App() {
             id="clarinete"
             autoComplete="off"
             type="number"
+            onKeyDown={(e) => {
+              if (e.key === "0" && !e.currentTarget.value) {
+                e.preventDefault();
+              }
+            }}
             {...register("clarinete")}
           />
           <label htmlFor="clarinete" className="label">
@@ -272,6 +324,11 @@ function App() {
             id="clarineteAlto"
             autoComplete="off"
             type="number"
+            onKeyDown={(e) => {
+              if (e.key === "0" && !e.currentTarget.value) {
+                e.preventDefault();
+              }
+            }}
             {...register("clarineteAlto")}
           />
           <label htmlFor="clarineteAlto" className="label">
@@ -286,6 +343,11 @@ function App() {
             id="clarineteBaixo"
             autoComplete="off"
             type="number"
+            onKeyDown={(e) => {
+              if (e.key === "0" && !e.currentTarget.value) {
+                e.preventDefault();
+              }
+            }}
             {...register("clarineteBaixo")}
           />
           <label htmlFor="clarineteBaixo" className="label">
@@ -300,6 +362,11 @@ function App() {
             id="saxofoneSoprano"
             autoComplete="off"
             type="number"
+            onKeyDown={(e) => {
+              if (e.key === "0" && !e.currentTarget.value) {
+                e.preventDefault();
+              }
+            }}
             {...register("saxofoneSoprano")}
           />
           <label htmlFor="saxofoneSoprano" className="label">
@@ -314,6 +381,11 @@ function App() {
             id="saxofoneAlto"
             autoComplete="off"
             type="number"
+            onKeyDown={(e) => {
+              if (e.key === "0" && !e.currentTarget.value) {
+                e.preventDefault();
+              }
+            }}
             {...register("saxofoneAlto")}
           />
           <label htmlFor="saxofoneAlto" className="label">
@@ -328,6 +400,11 @@ function App() {
             id="saxofoneTenor"
             autoComplete="off"
             type="number"
+            onKeyDown={(e) => {
+              if (e.key === "0" && !e.currentTarget.value) {
+                e.preventDefault();
+              }
+            }}
             {...register("saxofoneTenor")}
           />
           <label htmlFor="saxofoneTenor" className="label">
@@ -342,6 +419,11 @@ function App() {
             id="saxofoneBaritono"
             autoComplete="off"
             type="number"
+            onKeyDown={(e) => {
+              if (e.key === "0" && !e.currentTarget.value) {
+                e.preventDefault();
+              }
+            }}
             {...register("saxofoneBaritono")}
           />
           <label htmlFor="saxofoneBaritono" className="label">
@@ -356,6 +438,11 @@ function App() {
             id="trompeteCornet"
             autoComplete="off"
             type="number"
+            onKeyDown={(e) => {
+              if (e.key === "0" && !e.currentTarget.value) {
+                e.preventDefault();
+              }
+            }}
             {...register("trompeteCornet")}
           />
           <label htmlFor="trompeteCornet" className="label">
@@ -370,6 +457,11 @@ function App() {
             id="flugelhorn"
             autoComplete="off"
             type="number"
+            onKeyDown={(e) => {
+              if (e.key === "0" && !e.currentTarget.value) {
+                e.preventDefault();
+              }
+            }}
             {...register("flugelhorn")}
           />
           <label htmlFor="flugelhorn" className="label">
@@ -384,6 +476,11 @@ function App() {
             id="trompa"
             autoComplete="off"
             type="number"
+            onKeyDown={(e) => {
+              if (e.key === "0" && !e.currentTarget.value) {
+                e.preventDefault();
+              }
+            }}
             {...register("trompa")}
           />
           <label htmlFor="trompa" className="label">
@@ -398,6 +495,11 @@ function App() {
             id="tromboneTrombonito"
             autoComplete="off"
             type="number"
+            onKeyDown={(e) => {
+              if (e.key === "0" && !e.currentTarget.value) {
+                e.preventDefault();
+              }
+            }}
             {...register("tromboneTrombonito")}
           />
           <label htmlFor="tromboneTrombonito" className="label">
@@ -412,6 +514,11 @@ function App() {
             id="baritono"
             autoComplete="off"
             type="number"
+            onKeyDown={(e) => {
+              if (e.key === "0" && !e.currentTarget.value) {
+                e.preventDefault();
+              }
+            }}
             {...register("baritono")}
           />
           <label htmlFor="baritono" className="label">
@@ -426,6 +533,11 @@ function App() {
             autoComplete="off"
             id="eufonio"
             type="number"
+            onKeyDown={(e) => {
+              if (e.key === "0" && !e.currentTarget.value) {
+                e.preventDefault();
+              }
+            }}
             {...register("eufonio")}
           />
           <label htmlFor="eufonio" className="label">
@@ -440,6 +552,11 @@ function App() {
             placeholder=" "
             autoComplete="off"
             type="number"
+            onKeyDown={(e) => {
+              if (e.key === "0" && !e.currentTarget.value) {
+                e.preventDefault();
+              }
+            }}
             {...register("tuba")}
           />
           <label htmlFor="tuba" className="label">
