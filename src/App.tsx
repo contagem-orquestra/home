@@ -37,7 +37,9 @@ type OrchestraFormData = {
 
 function App() {
   const { register, handleSubmit, setValue, watch, reset } =
-    useForm<OrchestraFormData>({ defaultValues: { hinos: [], maestros: [] } });
+    useForm<OrchestraFormData>({
+      defaultValues: { hinos: [], maestros: [] },
+    });
 
   const [hymnNumber, setHymnNumber] = useState<string>("");
   const [maestroName, setMaestroName] = useState<string>("");
@@ -56,7 +58,7 @@ function App() {
         (!value || value === 0)
     );
 
-    if (instruments.length > 0) {
+    if (instruments.length <= 0) {
       setErrorMessage("A orquestra deve ter pelo menos um instrumento");
       return;
     }
@@ -133,7 +135,7 @@ function App() {
             {...register("orgaoEletronico")}
           />
           <label htmlFor="orgaoEletronico" className="label">
-            Órgão Eletrônico
+            Organistas
           </label>
         </div>
 
@@ -595,7 +597,9 @@ function App() {
             {errorMessage}
           </p>
         )}
-        <button type="submit">Gerar pdf</button>
+        <button style={{ marginBottom: "2rem" }} type="submit">
+          Gerar pdf
+        </button>
       </form>
     </main>
   );

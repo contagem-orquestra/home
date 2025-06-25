@@ -161,8 +161,8 @@ main {
 
 .hymn-item,
 .maestro-item {
-  display: flex;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 0.8fr 0.2fr;
 
   > .description {
     color: #fff;
@@ -197,7 +197,6 @@ main {
 
 button {
   width: 80vw;
-  margin-bottom: 2rem;
 }
 
 .hymn-form,
