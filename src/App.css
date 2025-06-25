@@ -197,25 +197,23 @@ main {
     &::before {
       left: 31%;
       transform: rotate(45deg);
-
-      @media (min-width: 500px) {
-        left: 39%;
-      }
-
-      @media (min-width: 1100px) {
-        left: 43%;
-      }
     }
 
     &::after {
       left: 31%;
       transform: rotate(135deg);
+    }
 
-      @media (min-width: 500px) {
+    @media (min-width: 500px) {
+      &::before,
+      &::after {
         left: 39%;
       }
+    }
 
-      @media (min-width: 1100px) {
+    @media (min-width: 1100px) {
+      &::before,
+      &::after {
         left: 43%;
       }
     }
