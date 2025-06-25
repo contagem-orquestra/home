@@ -56,6 +56,17 @@ main {
     background: none;
     transition: all 160ms ease-in;
     resize: none;
+    -moz-appearance: textfield;
+  }
+
+  > .input::-webkit-outer-spin-button,
+  > .input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  > .input[type="number"] {
+    -moz-appearance: textfield;
   }
 
   > .label {
@@ -121,6 +132,31 @@ main {
   &:active::after {
     height: 0.8rem;
   }
+
+  &::-moz-focus-inner {
+    border: 0;
+  }
+
+  @media (min-width: 500px) {
+    &::before,
+    &::after {
+      width: 20%;
+    }
+  }
+
+  @media (min-width: 1100px) {
+    &::before,
+    &::after {
+      width: 15%;
+    }
+  }
+
+  @media (min-width: 1500px) {
+    &::before,
+    &::after {
+      width: 12%;
+    }
+  }
 }
 
 .hymn-item,
@@ -161,6 +197,7 @@ main {
 
 button {
   width: 80vw;
+  margin-bottom: 2rem;
 }
 
 .hymn-form,
@@ -172,6 +209,7 @@ button {
   > .content {
     display: flex;
     align-items: flex-start;
+    width: 80vw;
   }
 }
 

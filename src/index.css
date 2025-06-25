@@ -37,6 +37,14 @@ button {
   padding: 1rem 2rem;
   text-decoration: none;
   cursor: pointer;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+button::-moz-focus-inner {
+  border: 0;
+  padding: 0;
 }
 
 li,
