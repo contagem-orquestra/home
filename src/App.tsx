@@ -6,6 +6,11 @@ import { useForm } from "react-hook-form";
 import "./App.css";
 import PDFDocument from "./PDFDocument";
 
+const hinoRegex =
+  /^\s*(?:(?:hino|coro)\s+)?([1-9][0-9]?|[1-3][0-9]{2}|4[0-7][0-9]|480)\s*$/i;
+
+const isNumber = /^[1-9][0-9]?$|^[1-3][0-9]{2}$|^4[0-7][0-9]$|^480$/;
+
 type OrchestraFormData = {
   orgaoEletronico?: number;
   violino?: number;
@@ -30,7 +35,7 @@ type OrchestraFormData = {
   baritono?: number;
   eufonio?: number;
   tuba?: number;
-  hinos: number[];
+  hinos: string[];
   maestros: string[];
   observacoes: string;
 };
@@ -91,10 +96,27 @@ function App() {
   };
 
   const addHymn = () => {
-    const num = parseInt(hymnNumber);
-    if (num && !hinos.includes(num) && num >= 1 && num <= 480) {
-      setValue("hinos", [...hinos, num]);
+    if (!hymnNumber) {
+      setHymnNumber("");
+      return;
     }
+
+    const [prefix, num] = hymnNumber.split(" ");
+
+    const prefixIsNumber = isNumber.test(prefix);
+    const numIsNumber = isNumber.test(num);
+
+    const isValid =
+      prefixIsNumber ||
+      (!prefixIsNumber && numIsNumber && /(hino|coro)/i.test(prefix));
+
+    if (isValid) {
+      setValue("hinos", [
+        ...hinos,
+        !prefixIsNumber ? hymnNumber + "" : `hino ${prefix}`,
+      ]);
+    }
+
     setHymnNumber("");
   };
 
@@ -573,16 +595,12 @@ function App() {
                 id="hymnNumber"
                 placeholder=" "
                 autoComplete="off"
-                type="number"
+                type="text"
+                pattern={hinoRegex.source}
                 className="input"
                 value={hymnNumber}
-                min="1"
-                max="480"
                 onChange={(e) => {
-                  const value = parseInt(e.target.value);
-                  if (!e.target.value || (value >= 1 && value <= 480)) {
-                    setHymnNumber(e.target.value);
-                  }
+                  setHymnNumber(e.target.value);
                 }}
               />
               <label htmlFor="hymnNumber" className="label">
@@ -615,7 +633,7 @@ function App() {
               <div className="hymn-item">
                 <input
                   className="description"
-                  type="number"
+                  type="text"
                   id={`hinos.${index}`}
                   {...register(`hinos.${index}`)}
                   value={hymn}

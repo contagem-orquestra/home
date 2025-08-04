@@ -24,7 +24,7 @@ type OrchestraFormData = {
   baritono?: number;
   eufonio?: number;
   tuba?: number;
-  hinos: number[];
+  hinos: string[];
   maestros: string[];
   observacoes?: string;
 };
@@ -116,7 +116,16 @@ const PDFDocument = ({ data }: { data: OrchestraFormData }) => {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-        <Text style={styles.title}>Relatório da Orquestra</Text>
+        <Text style={styles.title}>
+          {(() => {
+            const date = new Date();
+            const diaSemana = new Intl.DateTimeFormat("pt-BR", {
+              weekday: "long",
+            }).format(date);
+            const dataFormatada = new Intl.DateTimeFormat("pt-BR").format(date);
+            return `Relatório da Orquestra - ${diaSemana}, ${dataFormatada}`;
+          })()}
+        </Text>
 
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Instrumentos</Text>
@@ -163,7 +172,7 @@ const PDFDocument = ({ data }: { data: OrchestraFormData }) => {
           <Text style={styles.sectionTitle}>Hinos</Text>
           {data.hinos.map((hino, index) => (
             <Text key={index} style={styles.list}>
-              Hino {hino}
+              {hino}
             </Text>
           ))}
         </View>
